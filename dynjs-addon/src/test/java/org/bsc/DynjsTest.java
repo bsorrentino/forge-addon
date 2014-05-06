@@ -8,6 +8,8 @@ import org.dynjs.runtime.DynJS;
 import org.dynjs.runtime.GlobalObject;
 import org.dynjs.runtime.GlobalObjectFactory;
 import org.dynjs.runtime.Runner;
+import org.hamcrest.core.IsEqual;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,6 +40,19 @@ public class DynjsTest {
 	    
 	  }
 
+	  @Test
+	  public void runScriptFromClasspath() throws Exception {
+		
+		java.io.InputStream is = getClass().getClassLoader().getResourceAsStream("dynjsapp.js");
+		
+	    final Runner runner = dynjs.newRunner();
+
+	    Object result = runner.withSource( new java.io.InputStreamReader(is)).execute();
+	    
+	    Assert.assertThat( String.valueOf(result), IsEqual.equalTo("end"));
+	  }
+	  
+	  
 	  private Object runScript(String fileName) throws FileNotFoundException {
 		  
 		final File baseDir =  new File("src/test/resources");

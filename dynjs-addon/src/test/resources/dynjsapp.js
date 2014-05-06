@@ -17,3 +17,5 @@ reflection.printC( "dynjs.classpath ", dynjs.classpath );
 
 reflection.printM( "dynjs", dynjs );
 reflection.printM( "dynjs.classpath", dynjs.classpath );
+
+"end";
