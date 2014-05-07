@@ -17,6 +17,7 @@ import org.jboss.forge.addon.projects.Projects;
 import org.jboss.forge.addon.resource.DirectoryResource;
 import org.jboss.forge.addon.resource.FileResource;
 import org.jboss.forge.addon.resource.Resource;
+import org.jboss.forge.addon.resource.ResourceFactory;
 import org.jboss.forge.addon.resource.ResourceFilter;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
@@ -42,7 +43,9 @@ public class EvalInProject extends AbstractDynjsProjectCommand {
 	@WithAttributes(label = "Script", required = true, type = InputType.FILE_PICKER)
 	private UIInput<FileResource<?>> script;
 
-
+	@Inject
+	ResourceFactory resFactory;
+	
 	@Override
 	public UICommandMetadata getMetadata(UIContext context) {
 		return Metadata.forCommand(EvalInProject.class).name("EvalInProject")
@@ -53,6 +56,7 @@ public class EvalInProject extends AbstractDynjsProjectCommand {
 		return ctx.getProvider().getOutput().out();
 	}
 
+	
 	@SuppressWarnings("unchecked")
 	private List<Resource<?>> listResources(Resource<?> res,
 			final List<Resource<?>> result) {
@@ -97,8 +101,25 @@ public class EvalInProject extends AbstractDynjsProjectCommand {
 					UIContext context,
 					InputComponent<?, FileResource<?>> input, String value) {
 
-				final List<Resource<?>> result = listResources(
+				List<Resource<?>> result = listResources(
 						project.getRoot(), new ArrayList<Resource<?>>());
+
+				final java.io.File root = (java.io.File) project.getRoot().getUnderlyingResourceObject();
+						
+				final java.io.File resourcesDirs[] = { 
+						new java.io.File( root, "src/main/resources"),
+						new java.io.File( root, "src/test/resources")
+				};
+				
+				for( java.io.File resourcesDir : resourcesDirs ) {
+					if( resourcesDir.exists() ) {
+	
+						Resource<?> resourcesRes = resFactory.create(resourcesDir);
+						
+						listResources(resourcesRes, result);
+						
+					}
+				}
 
 				Collections.sort(result, new Comparator<Resource<?>>() {
 
