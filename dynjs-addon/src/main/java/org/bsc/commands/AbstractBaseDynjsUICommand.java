@@ -66,7 +66,7 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 
 		final String folder = file.getParent();
 		if (folder != null) {
-			dynjs.execute(String.format("require.addLoadPath('%s')", folder));
+			dynjs.execute(String.format("__basedir = '%s'; require.addLoadPath(__basedir);", folder));
 		}
 
 		final Object result = runner.withSource(file).execute();
