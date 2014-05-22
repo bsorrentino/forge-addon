@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.jar.Manifest;
 
 import javax.inject.Inject;
 
@@ -161,10 +162,11 @@ public class EvalInProject extends AbstractDynjsProjectCommand {
 
 		try {
 
+			final Manifest mf = getManifest();
 			
-			super.copyResourceToAssetDir("facets.js", super.getManifest());
+			super.copyResourceToAssetDir("facets.js", mf);
 			
-			final Object result = super.executeFromFile(context.getUIContext(), script.getValue(), factory);
+			final Object result = super.executeFromFile(context.getUIContext(), script.getValue(), factory, mf);
 
 			return Results.success(String.valueOf(result));
 

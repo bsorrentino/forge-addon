@@ -54,7 +54,7 @@ public class Eval extends AbstractDynjsUICommand {
 				
 		try {
 
-			final Object result = super.executeFromFile(context.getUIContext(), js, factory);
+			final Object result = super.executeFromFile(context.getUIContext(), js, factory, getManifest());
 			
 			return Results.success(String.valueOf(result));
 

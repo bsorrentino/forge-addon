@@ -90,7 +90,7 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 	 * @return
 	 * @throws Exception
 	 */
-	protected Object executeFromClasspath(UIContext ctx, final String resourceName, GlobalObjectFactory factory)
+	protected Object executeFromClasspath(UIContext ctx, final String resourceName, GlobalObjectFactory factory, Manifest mf)
 			throws Exception {
 
 		final Config config = new Config();
@@ -109,7 +109,7 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 			throw new IllegalArgumentException( String.format("resource [%s] not found in classpath!", resourceName));
 		}
 
-		final java.io.File assetDir = getAssetDir(getManifest());
+		final java.io.File assetDir = getAssetDir(mf);
 
 		dynjs.execute( new StringBuilder()
 			.append("require.addLoadPath('").append(assetDir.getPath()).append("');")
@@ -129,7 +129,7 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 	 * @return
 	 * @throws Exception
 	 */
-	protected Object executeFromFile(UIContext ctx, final FileResource<?> js, GlobalObjectFactory factory)
+	protected Object executeFromFile(UIContext ctx, final FileResource<?> js, GlobalObjectFactory factory, Manifest mf)
 			throws Exception {
 
 		final Config config = new Config();
@@ -144,7 +144,7 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 
 		final File file = js.getUnderlyingResourceObject();
 
-		final java.io.File assetDir = getAssetDir(getManifest());
+		final java.io.File assetDir = getAssetDir(mf);
 		final String folder = file.getParent();
 		if (folder != null) {
 			dynjs.execute( new StringBuilder()
