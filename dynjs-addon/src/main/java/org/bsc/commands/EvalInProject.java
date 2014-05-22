@@ -161,6 +161,9 @@ public class EvalInProject extends AbstractDynjsProjectCommand {
 
 		try {
 
+			
+			super.copyResourceToAssetDir("facets.js", super.getManifest());
+			
 			final Object result = super.executeFromFile(context.getUIContext(), script.getValue(), factory);
 
 			return Results.success(String.valueOf(result));

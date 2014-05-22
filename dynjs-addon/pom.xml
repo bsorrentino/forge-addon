@@ -124,6 +124,14 @@
             </configuration>
           </execution>
         </executions>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <version>${project.version}</version>
+            </manifestEntries>
+          </archive>
+        </configuration>
+        
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
