@@ -161,12 +161,14 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 		final java.io.File assetDir = getAssetDir(mf);
 		final String folder = file.getParent();
 		if (folder != null) {
-			dynjs.execute( new StringBuilder()
-								.append("__basedir = '").append(folder).append("';")
-								.append("require.addLoadPath(__basedir);")
-								.append("require.addLoadPath('").append(assetDir.getPath()).append("');")
-								.toString()
-								);
+			
+			final String header = new StringBuilder()
+				.append("__basedir = '").append(folder).append("';")
+				.append("require.addLoadPath(__basedir);")
+				.append("require.addLoadPath('").append(assetDir.getPath()).append("');")
+				.toString();
+			
+			dynjs.execute(header);
 		}
 
 		final Object result = runner.withSource(file).execute();
