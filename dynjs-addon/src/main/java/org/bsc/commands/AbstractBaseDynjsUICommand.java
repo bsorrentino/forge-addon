@@ -26,9 +26,23 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 	 * 
 	 * @return
 	 * @throws IOException
+	 * @see http://stackoverflow.com/questions/1272648/reading-my-own-jars-manifest
 	 */
 	protected Manifest getManifest() throws IOException {
-		return new Manifest(getClass().getClassLoader().getResourceAsStream("MANIFEST.MF"));
+		Class<?> clazz = getClass();
+		String className = clazz.getSimpleName() + ".class";
+		String classPath = clazz.getResource(className).toString();
+		
+		if (!classPath.startsWith("jar")) {
+		  // Class not from JAR
+		  throw new IOException( "MANIFEST NOT FOUND!");
+		}
+		
+		final String manifestPath = classPath.substring(0, classPath.lastIndexOf("!") + 1).concat("/META-INF/MANIFEST.MF");
+		
+		Manifest manifest = new Manifest(new java.net.URL(manifestPath).openStream());
+
+		return manifest;
 	}
 	
 	/**

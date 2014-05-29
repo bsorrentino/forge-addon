@@ -23,12 +23,6 @@
         <version>2.3.0.Final</version>
         <classifier>forge-addon</classifier>
       </dependency>
-      <dependency>
-        <groupId>org.bsc</groupId>
-        <artifactId>dynjs-addon</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-        <scope>test</scope>
-      </dependency>
     </dependencies>
   </dependencyManagement>
   <dependencies>
@@ -36,16 +30,6 @@
       <groupId>org.jboss.forge.furnace.container</groupId>
       <artifactId>cdi</artifactId>
       <classifier>forge-addon</classifier>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.forge.furnace.test</groupId>
-      <artifactId>furnace-test-harness</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.forge.furnace.test</groupId>
-      <artifactId>arquillian-furnace-classpath</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jboss.forge.addon</groupId>
@@ -78,11 +62,28 @@
       <version>0.2.3-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
-    <dependency>
-      <groupId>org.bsc</groupId>
-      <artifactId>dynjs-addon</artifactId>
+    
+<!-- 
+=========================================
+TEST
+=========================================
+ -->    
+      <dependency>
+         <groupId>org.jboss.forge.addon</groupId>
+         <artifactId>ui-test-harness</artifactId>
+         <classifier>forge-addon</classifier>
+         <scope>test</scope>
+      </dependency>    <dependency>
+      <groupId>org.jboss.forge.furnace.test</groupId>
+      <artifactId>furnace-test-harness</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.jboss.forge.furnace.test</groupId>
+      <artifactId>arquillian-furnace-classpath</artifactId>
+      <scope>test</scope>
+    </dependency>
+ 
   </dependencies>
   <repositories>
     <repository>
