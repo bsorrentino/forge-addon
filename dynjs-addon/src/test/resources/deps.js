@@ -4,8 +4,11 @@ var deps = require( 'DependencyQueryBuilder');
 var localRepo = require( 'DependencyRepository')( "local");
 var depbuilder = require( 'DependencyBuilder');
 
+var RepositoryUtils = org.jboss.forge.addon.maven.projects.util.RepositoryUtils;
+
 try {
 
+print( "RepositoryUtils: " + RepositoryUtils.name );
 print( command );
 //print( command.getDependencyResolver() );
 
@@ -34,7 +37,7 @@ var result =  dr.resolveVersions( query1 );
 
 print( result.size() );
 
-print( depbuilder.name ); 
+print( depbuilder.name );
 
 var ii = result.iterator();
 

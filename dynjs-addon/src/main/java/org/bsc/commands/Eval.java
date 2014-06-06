@@ -73,9 +73,5 @@ public class Eval extends AbstractDynjsUICommand {
 		}
 
 	}
-	
-	public DependencyResolver getDependencyResolver() {
-		return dependencyResolver;
-	}
-	
+		
 }

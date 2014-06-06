@@ -11,24 +11,27 @@ module.exports = {
             print( name + ": " + o.class.name );
         }
     },
+    _printM:function( methods ) {
+      for( var i = 0; i< methods.length; ++i ) {
+          print( "\t" + methods[i].name );
+      }
+    },
     printM:function( name, o ) {
         if( o ) {
-            var methods = o.class.declaredMethods;
-            //var methods = o.getClass().getMethods();
-            print( "Method of " +  name);
-            for( var i = 0; i< methods.length; ++i ) {
-                print( "\t" + methods[i].name );
-            }
+            print( "Method of " +  name + " " + o.class.name);
+            this._printM( o.class.methods );
         }
     },
-    printSM:function( name, o ) {
+    printDM:function( name, o ) {
         if( o ) {
-            var methods = o.declaredMethods;
-            //var methods = o.getClass().getMethods();
-            print( "Method of " +  name);
-            for( var i = 0; i< methods.length; ++i ) {
-                print( "\t" + methods[i].name );
-            }
+            print( "Method of " +  name + " " + o.class.name);
+            this._printM( o.class.declaredMethods );
+        }
+    },
+    printSM:function( name, clazz ) {
+        if( clazz ) {
+            print( "Method of " +  name + " " + clazz.name);
+            this._printM(clazz.methods );
         }
     }
 };

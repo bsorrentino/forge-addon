@@ -5,14 +5,19 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.jar.Manifest;
 
+import javax.inject.Inject;
+
 import org.apache.commons.io.FileUtils;
 import org.dynjs.Config;
 import org.dynjs.runtime.DynJS;
 import org.dynjs.runtime.GlobalObjectFactory;
 import org.dynjs.runtime.Runner;
+import org.jboss.forge.addon.dependencies.DependencyResolver;
+import org.jboss.forge.addon.environment.Environment;
 import org.jboss.forge.addon.projects.ui.AbstractProjectCommand;
 import org.jboss.forge.addon.resource.FileResource;
 import org.jboss.forge.addon.ui.context.UIContext;
+import org.jboss.forge.furnace.manager.maven.MavenContainer;
 import org.jboss.forge.furnace.util.OperatingSystemUtils;
 
 /**
@@ -21,7 +26,28 @@ import org.jboss.forge.furnace.util.OperatingSystemUtils;
  *
  */
 public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand {
+
+	@Inject
+	private MavenContainer container;
+
+	@Inject
+	private Environment environment;
+
+	@Inject
+	protected DependencyResolver dependencyResolver;
 	
+	public MavenContainer getContainer() {
+		return container;
+	}
+
+	public Environment getEnvironment() {
+		return environment;
+	}
+
+	public DependencyResolver getDependencyResolver() {
+		return dependencyResolver;
+	}
+
 	/**
 	 * 
 	 * @return
@@ -100,6 +126,16 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 	
 	/**
 	 * 
+	 * @return
+	 */
+	private Config newConfig() {
+		//final Config config = new Config(getClass().getClassLoader().getParent());
+		final Config config = new Config(getClass().getClassLoader());
+
+		return config;
+	}
+	/**
+	 * 
 	 * @param js
 	 * @return
 	 * @throws Exception
@@ -107,12 +143,12 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 	protected Object executeFromClasspath(UIContext ctx, final String resourceName, GlobalObjectFactory factory, Manifest mf)
 			throws Exception {
 
-		final Config config = new Config();
-
+		final Config config = newConfig();
+		
 		config.setGlobalObjectFactory(factory);
 		config.setOutputStream(ctx.getProvider().getOutput().out());
 		config.setErrorStream(ctx.getProvider().getOutput().err());
-
+		
 		final DynJS dynjs = new DynJS(config);
 
 		final Runner runner = dynjs.newRunner();
@@ -146,7 +182,7 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 	protected Object executeFromFile(UIContext ctx, final FileResource<?> js, GlobalObjectFactory factory, Manifest mf)
 			throws Exception {
 
-		final Config config = new Config();
+		final Config config = newConfig();
 
 		config.setGlobalObjectFactory(factory);
 		config.setOutputStream(ctx.getProvider().getOutput().out());
