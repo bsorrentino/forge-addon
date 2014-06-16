@@ -8,7 +8,10 @@ import org.dynjs.runtime.DynJS;
 import org.dynjs.runtime.GlobalObject;
 import org.dynjs.runtime.GlobalObjectFactory;
 import org.dynjs.runtime.Runner;
+import org.hamcrest.core.Is;
 import org.hamcrest.core.IsEqual;
+import org.hamcrest.core.IsNull;
+import org.hamcrest.core.IsInstanceOf;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +25,7 @@ public class DynjsTest {
 	  public void initialize() {
 	    config = new Config();
 	    
-	    
+	    config.setInvokeDynamicEnabled(true);
 		config.setGlobalObjectFactory( new GlobalObjectFactory() {
 			
 			@Override
@@ -78,6 +81,21 @@ public class DynjsTest {
 	      
 	      runScript( "dynjsapp.js");
 	            
+	  }
+
+	  @Test
+	  public void testOverride() throws Exception {
+	
+		  Object impl = dynjs.evaluate(  
+				  "new org.bsc.AbstractFoo( {",
+				  " implementMe: function(msg) { print( msg ); return msg; }",
+				  "} );"
+				  );
+	      Assert.assertThat( impl, IsNull.notNullValue());
+	      Assert.assertThat( impl, IsInstanceOf.instanceOf(AbstractFoo.class));
+	      
+	      String result = ((AbstractFoo) impl).implementMe("test");    
+	      Assert.assertThat(result, IsEqual.equalTo("test"));
 	  }
 
 }
