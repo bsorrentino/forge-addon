@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import org.dynjs.runtime.DynJS;
 import org.dynjs.runtime.GlobalObject;
 import org.dynjs.runtime.GlobalObjectFactory;
-import org.jboss.forge.addon.dependencies.DependencyResolver;
 import org.jboss.forge.addon.resource.FileResource;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
@@ -19,7 +18,6 @@ import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
 import org.jboss.forge.addon.ui.metadata.WithAttributes;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
-import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 
 public class Eval extends AbstractDynjsUICommand {
@@ -31,7 +29,7 @@ public class Eval extends AbstractDynjsUICommand {
 	@Override
 	public UICommandMetadata getMetadata(UIContext context) {
 		return Metadata.forCommand(Eval.class).name("Eval")
-				.category(Categories.create("Utility", "Dynjs"));
+				.category(CATEGORY);
 	}
 
 	@Override

@@ -17,6 +17,8 @@ import org.jboss.forge.addon.environment.Environment;
 import org.jboss.forge.addon.projects.ui.AbstractProjectCommand;
 import org.jboss.forge.addon.resource.FileResource;
 import org.jboss.forge.addon.ui.context.UIContext;
+import org.jboss.forge.addon.ui.metadata.UICategory;
+import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.furnace.manager.maven.MavenContainer;
 import org.jboss.forge.furnace.util.OperatingSystemUtils;
 
@@ -25,8 +27,8 @@ import org.jboss.forge.furnace.util.OperatingSystemUtils;
  * @author softphone
  *
  */
-public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand {
-
+public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand implements AddonConstants {
+	
 	@Inject
 	private MavenContainer container;
 

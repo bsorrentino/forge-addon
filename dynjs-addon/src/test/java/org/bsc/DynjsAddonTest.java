@@ -18,6 +18,8 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class DynjsAddonTest
 {
+   //static final String version = "2.4.1.Final";
+   static final String version = "2.6.0.Final";
 
    @Deployment
    @Dependencies({ 
@@ -30,15 +32,16 @@ public class DynjsAddonTest
 	   })
    public static ForgeArchive getDeployment()
    {
+	  
       ForgeArchive archive = ShrinkWrap
             .create(ForgeArchive.class)
             .addBeansXML()
             .addAsAddonDependencies(
             		
-                    AddonDependencyEntry.create("org.jboss.forge.addon:addon-manager", "2.4.1.Final"),
-                    AddonDependencyEntry.create("org.jboss.forge.addon:addons", "2.4.1.Final"),
-                    AddonDependencyEntry.create("org.jboss.forge.addon:core", "2.4.1.Final"),
-                    AddonDependencyEntry.create("org.jboss.forge.furnace.container:cdi", "2.4.1.Final"),
+                    AddonDependencyEntry.create("org.jboss.forge.addon:addon-manager", version),
+                    AddonDependencyEntry.create("org.jboss.forge.addon:addons", version),
+                    AddonDependencyEntry.create("org.jboss.forge.addon:core", version),
+                    AddonDependencyEntry.create("org.jboss.forge.furnace.container:cdi", version),
                     
             		AddonDependencyEntry.create("org.bsc:dynjs-addon", "1.0.0-SNAPSHOT")
             		)
