@@ -8,6 +8,8 @@ import java.util.jar.Manifest;
 import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.bsc.functional.Functional.Fn;
 import org.dynjs.Config;
 import org.dynjs.runtime.DynJS;
 import org.dynjs.runtime.GlobalObjectFactory;
@@ -17,8 +19,7 @@ import org.jboss.forge.addon.environment.Environment;
 import org.jboss.forge.addon.projects.ui.AbstractProjectCommand;
 import org.jboss.forge.addon.resource.FileResource;
 import org.jboss.forge.addon.ui.context.UIContext;
-import org.jboss.forge.addon.ui.metadata.UICategory;
-import org.jboss.forge.addon.ui.util.Categories;
+import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.furnace.manager.maven.MavenContainer;
 import org.jboss.forge.furnace.util.OperatingSystemUtils;
 
@@ -124,6 +125,38 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 		if( !target.exists() || getVersion(mf).endsWith("SNAPSHOT")) {
 			FileUtils.copyURLToFile(source, target);
 		}
+	}
+	/**
+	 * 
+	 * @param w
+	 * @throws IOException 
+	 */
+	protected final <T>  T copyFileToAssetDir( final java.io.File resource, final Manifest mf, boolean overwrite, 
+					Fn<Void,T> onSuccess, 
+					Fn<Exception,T> onError  )  
+	{
+		
+		if( resource == null ) {
+			throw new IllegalArgumentException("resource parameter is null!");
+		}
+		
+		
+		try {
+			final java.io.File assetDir = getAssetDir(mf);
+			final String resourceName = FilenameUtils.getName( resource.getName() );
+			final java.io.File target = new java.io.File( assetDir, resourceName );
+
+			if( target.exists() && !overwrite ) {
+				return onError.f(new IllegalStateException(String.format("resource [%s] already exists!", resourceName)) );
+			}
+			FileUtils.copyFileToDirectory(resource, assetDir);
+
+		} catch (IOException e) {
+			return onError.f(e);
+		}
+		
+		return onSuccess.f(null);
+		
 	}
 	
 	/**
