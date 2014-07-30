@@ -169,13 +169,8 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 
 		return config;
 	}
-	/**
-	 * 
-	 * @param js
-	 * @return
-	 * @throws Exception
-	 */
-	protected Object executeFromClasspath(UIContext ctx, final String resourceName, GlobalObjectFactory factory, Manifest mf)
+	
+	protected Runner runnerFromClasspath(UIContext ctx, final String resourceName, GlobalObjectFactory factory, Manifest mf)
 			throws Exception {
 
 		final Config config = newConfig();
@@ -196,12 +191,73 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 
 		final java.io.File assetDir = getAssetDir(mf);
 
-		dynjs.execute( new StringBuilder()
+		dynjs.evaluate( new StringBuilder()
 			.append("require.addLoadPath('").append(assetDir.getPath()).append("');")
 			.toString()	
 			);
 		
-		final Object result = runner.withSource( new java.io.InputStreamReader(is)).execute();
+		return runner.withSource( new java.io.InputStreamReader(is));
+	}
+
+	/**
+	 * 
+	 * @param ctx
+	 * @param factory
+	 * @return
+	 */
+	protected DynJS newDynJS( UIContext ctx, GlobalObjectFactory factory) {
+		
+		final Config config = newConfig();
+
+		config.setGlobalObjectFactory(factory);
+		config.setOutputStream(ctx.getProvider().getOutput().out());
+		config.setErrorStream(ctx.getProvider().getOutput().err());
+
+		final DynJS dynjs = new DynJS(config);
+
+		return dynjs;
+	}
+	
+	/**
+	 * 
+	 * @param ctx
+	 * @param js
+	 * @param factory
+	 * @param mf
+	 * @return
+	 * @throws Exception
+	 */
+	protected Runner runnerFromFile( DynJS dynjs, final FileResource<?> js,  Manifest mf)  throws Exception {
+
+		final File file = js.getUnderlyingResourceObject();
+
+		final java.io.File assetDir = getAssetDir(mf);
+		final String folder = file.getParent();
+		if (folder != null) {
+			
+			final String header = new StringBuilder()
+				.append("__basedir = '").append(folder).append("';")
+				.append("require.addLoadPath(__basedir);")
+				.append("require.addLoadPath('").append(assetDir.getPath()).append("');")
+				.toString();
+			
+			dynjs.evaluate(header);
+		}
+
+		return dynjs.newRunner().withSource(file);
+
+	}
+	
+	/**
+	 * 
+	 * @param js
+	 * @return
+	 * @throws Exception
+	 */
+	protected Object executeFromClasspath(UIContext ctx, final String resourceName, GlobalObjectFactory factory, Manifest mf)
+			throws Exception {
+		
+		final Object result = runnerFromClasspath(ctx, resourceName, factory, mf).execute();
 
 		return result;
 
@@ -217,35 +273,13 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 	protected Object executeFromFile(UIContext ctx, final FileResource<?> js, GlobalObjectFactory factory, Manifest mf)
 			throws Exception {
 
-		final Config config = newConfig();
+		final DynJS dynjs = newDynJS(ctx, factory);
 
-		config.setGlobalObjectFactory(factory);
-		config.setOutputStream(ctx.getProvider().getOutput().out());
-		config.setErrorStream(ctx.getProvider().getOutput().err());
-
-		final DynJS dynjs = new DynJS(config);
-
-		final Runner runner = dynjs.newRunner();
-
-		final File file = js.getUnderlyingResourceObject();
-
-		final java.io.File assetDir = getAssetDir(mf);
-		final String folder = file.getParent();
-		if (folder != null) {
-			
-			final String header = new StringBuilder()
-				.append("__basedir = '").append(folder).append("';")
-				.append("require.addLoadPath(__basedir);")
-				.append("require.addLoadPath('").append(assetDir.getPath()).append("');")
-				.toString();
-			
-			dynjs.execute(header);
-		}
-
-		final Object result = runner.withSource(file).execute();
+		final Object result = runnerFromFile(dynjs, js, mf).execute();
 
 		return result;
 
 	}
 
+	
 }
