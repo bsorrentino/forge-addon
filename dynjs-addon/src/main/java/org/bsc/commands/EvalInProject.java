@@ -138,7 +138,7 @@ public class EvalInProject extends AbstractDynjsProjectCommand {
 	}
 
 	@Override
-	public Result execute(UIExecutionContext context) {
+	public Result execute(final UIExecutionContext context) {
 
 		final Project project = super.getSelectedProject(context);
 
@@ -154,6 +154,7 @@ public class EvalInProject extends AbstractDynjsProjectCommand {
 						defineReadOnlyGlobalProperty("command",
 								EvalInProject.this);
 						defineReadOnlyGlobalProperty("project", project);
+						defineReadOnlyGlobalProperty("context", context);
 					}
 				};
 			}

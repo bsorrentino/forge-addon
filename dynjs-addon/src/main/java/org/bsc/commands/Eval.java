@@ -39,7 +39,7 @@ public class Eval extends AbstractDynjsUICommand {
 	}
 
 	@Override
-	public Result execute(UIExecutionContext context) {
+	public Result execute(final UIExecutionContext context) {
 		
 		final PrintStream out = context.getUIContext().getProvider().getOutput().out();
 		
@@ -52,6 +52,8 @@ public class Eval extends AbstractDynjsUICommand {
 				return new GlobalObject(runtime) {{
 					
 					defineReadOnlyGlobalProperty("command", Eval.this);
+					defineReadOnlyGlobalProperty("context", context);
+					
 				}};
 			}
 		};
