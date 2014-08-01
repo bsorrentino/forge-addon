@@ -56,10 +56,22 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 	 * @param context
 	 * @return
 	 */
-	protected <T extends UIContextProvider> UIOutput getOut( T context ) {
+	public static  <T extends UIContextProvider> UIOutput getOut( T context ) {
 		return context.getUIContext().getProvider().getOutput();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static <C extends UIContextProvider,T> T getAttribute( C ctx, String name ) {
+		
+		return (T)ctx.getUIContext().getAttributeMap().get(name);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <C extends UIContextProvider,T> T putAttribute( C ctx, String name, T value ) {
+		
+		return (T)ctx.getUIContext().getAttributeMap().put(name, value);
+	}
+
 	/**
 	 * 
 	 * @return

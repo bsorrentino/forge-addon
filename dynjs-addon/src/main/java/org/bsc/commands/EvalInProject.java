@@ -151,10 +151,10 @@ public class EvalInProject extends AbstractDynjsProjectCommand {
 				return new GlobalObject(runtime) {
 					{
 
-						defineReadOnlyGlobalProperty("command",
+						defineReadOnlyGlobalProperty("self",
 								EvalInProject.this);
 						defineReadOnlyGlobalProperty("project", project);
-						defineReadOnlyGlobalProperty("context", context);
+						//defineReadOnlyGlobalProperty("context", context);
 					}
 				};
 			}
