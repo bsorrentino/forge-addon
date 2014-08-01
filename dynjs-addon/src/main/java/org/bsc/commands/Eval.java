@@ -1,6 +1,5 @@
 package org.bsc.commands;
 
-import java.io.PrintStream;
 import java.util.jar.Manifest;
 
 import javax.inject.Inject;
@@ -27,9 +26,11 @@ import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.result.navigation.NavigationResultBuilder;
 import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizard;
+import org.jboss.forge.addon.ui.wizard.UIWizardStep;
 
 public class Eval extends AbstractDynjsUICommand implements UIWizard {
 
+	
 	private DynJS dynjs;
 	
 	@Inject
@@ -44,69 +45,76 @@ public class Eval extends AbstractDynjsUICommand implements UIWizard {
 
 	@Override
 	public void initializeUI(UIBuilder builder) throws Exception {
-
+		getOut( builder ).out().println( "Eval.initializeUI");
+		
 		builder.add(script);
 	}
 
 	@Override
 	public Result execute(final UIExecutionContext context) {
-
-		final GlobalObjectFactory factory = new GlobalObjectFactory() {
-			
-			@Override
-			public GlobalObject newGlobalObject(DynJS runtime) {
-				return new GlobalObject(runtime) {{
-					
-					defineReadOnlyGlobalProperty("command", Eval.this);
-					//defineReadOnlyGlobalProperty("context", context);
-					
-				}};
-			}
-		};
-
-		dynjs = newDynJS(context.getUIContext(), factory);
-
-		final FileResource<?> js = script.getValue();
-		try {
-
-			final Manifest mf = getManifest();
-	
-			runnerFromFile(dynjs, js, mf).evaluate();
-
-		} catch (Exception e) {
-			return Results.fail("error evaluating script file", e);
-		}
-		
-		return null;
+		getOut( context ).out().println( "Eval.execute");
+		return Results.success();
 	}
 	
 	@Override
-	public NavigationResult next(UINavigationContext navigationContext) throws Exception {
+	public NavigationResult next(UINavigationContext context) throws Exception {
 		
-		final PrintStream out = navigationContext.getUIContext().getProvider().getOutput().out();
+		getOut(context).out().println( "Eval.next" );
 		
-		out.println( "next" );
-		
-		NavigationResultBuilder builder = NavigationResultBuilder.create();
-		
-		builder.add( new UICommand() {
+		if( dynjs == null ) {
+			final GlobalObjectFactory factory = new GlobalObjectFactory() {
+				
+				@Override
+				public GlobalObject newGlobalObject(DynJS runtime) {
+					return new GlobalObject(runtime) {{
 						
-			@Override
-			public void validate(UIValidationContext context) {
-				
-			}
-			
-			@Override
-			public boolean isEnabled(UIContext context) {			
-				return true;
-			}
-			
-			@Override
-			public void initializeUI(UIBuilder builder) throws Exception {
-				
-				final PrintStream out = builder.getUIContext().getProvider().getOutput().out();
-				out.println( "initializeUI ");
-				
+						defineReadOnlyGlobalProperty("command", Eval.this);
+						//defineReadOnlyGlobalProperty("context", context);
+						
+					}};
+				}
+			};
+	
+			dynjs = newDynJS(context, factory);
+	
+			final FileResource<?> js = script.getValue();
+	
+			final Manifest mf = getManifest();
+	
+			runnerFromFile(dynjs, js, mf).evaluate();
+	
+		}
+		
+		return NavigationResultBuilder.create()
+				.add( new EvalStep() )
+				.build();
+	}
+		
+	
+	class EvalStep implements UICommand, UIWizardStep {
+
+		@Override
+		public NavigationResult next(UINavigationContext context) throws Exception {
+			getOut(context).out().println( "EvalStep.next");
+			return null;
+		}
+
+		@Override
+		public Result execute(UIExecutionContext context) throws Exception {
+			getOut(context).out().println( "EvalStep.execute");
+			return Results.success();
+		}
+
+		@Override
+		public UICommandMetadata getMetadata(UIContext context) {
+			return null;
+		}
+
+		@Override
+		public void initializeUI(UIBuilder builder) throws Exception {
+			getOut(builder).out().printf( "EvalStep.initializeUI( dynjs=[%s] )\n", dynjs );
+
+			if( dynjs!= null ) {
 				Reference ref = dynjs.getExecutionContext().resolve("initializeUI");
 				
 				if( ref!=null ) {
@@ -118,24 +126,19 @@ public class Eval extends AbstractDynjsUICommand implements UIWizard {
 						
 					}
 				}
-				
 			}
 			
-			@Override
-			public UICommandMetadata getMetadata(UIContext context) {
-				return null;
-			}
+		}
+
+		@Override
+		public boolean isEnabled(UIContext context) {
+			return true;
+		}
+
+		@Override
+		public void validate(UIValidationContext context) {
 			
-			@Override
-			public Result execute(UIExecutionContext context) throws Exception {
-				final PrintStream out = context.getUIContext().getProvider().getOutput().out();
-				
-				out.println( "WIZARD!!!!");
-				return Results.success();
-			}
-		});
+		}
 		
-		return builder.build();
 	}
-		
 }

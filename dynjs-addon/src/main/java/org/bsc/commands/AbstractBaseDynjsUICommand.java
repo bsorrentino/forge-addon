@@ -18,8 +18,8 @@ import org.jboss.forge.addon.dependencies.DependencyResolver;
 import org.jboss.forge.addon.environment.Environment;
 import org.jboss.forge.addon.projects.ui.AbstractProjectCommand;
 import org.jboss.forge.addon.resource.FileResource;
-import org.jboss.forge.addon.ui.context.UIContext;
-import org.jboss.forge.addon.ui.result.Result;
+import org.jboss.forge.addon.ui.context.UIContextProvider;
+import org.jboss.forge.addon.ui.output.UIOutput;
 import org.jboss.forge.furnace.manager.maven.MavenContainer;
 import org.jboss.forge.furnace.util.OperatingSystemUtils;
 
@@ -51,6 +51,15 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 		return dependencyResolver;
 	}
 
+	/**
+	 * 
+	 * @param context
+	 * @return
+	 */
+	protected <T extends UIContextProvider> UIOutput getOut( T context ) {
+		return context.getUIContext().getProvider().getOutput();
+	}
+	
 	/**
 	 * 
 	 * @return
@@ -170,14 +179,14 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 		return config;
 	}
 	
-	protected Runner runnerFromClasspath(UIContext ctx, final String resourceName, GlobalObjectFactory factory, Manifest mf)
+	protected <T extends UIContextProvider> Runner runnerFromClasspath(T ctx, final String resourceName, GlobalObjectFactory factory, Manifest mf)
 			throws Exception {
 
 		final Config config = newConfig();
 		
 		config.setGlobalObjectFactory(factory);
-		config.setOutputStream(ctx.getProvider().getOutput().out());
-		config.setErrorStream(ctx.getProvider().getOutput().err());
+		config.setOutputStream(getOut(ctx).out());
+		config.setErrorStream(getOut(ctx).err());
 		
 		final DynJS dynjs = new DynJS(config);
 
@@ -205,13 +214,13 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 	 * @param factory
 	 * @return
 	 */
-	protected DynJS newDynJS( UIContext ctx, GlobalObjectFactory factory) {
+	protected <T extends UIContextProvider> DynJS newDynJS( T ctx, GlobalObjectFactory factory) {
 		
 		final Config config = newConfig();
 
 		config.setGlobalObjectFactory(factory);
-		config.setOutputStream(ctx.getProvider().getOutput().out());
-		config.setErrorStream(ctx.getProvider().getOutput().err());
+		config.setOutputStream(getOut(ctx).out());
+		config.setErrorStream(getOut(ctx).err());
 
 		final DynJS dynjs = new DynJS(config);
 
@@ -254,7 +263,7 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 	 * @return
 	 * @throws Exception
 	 */
-	protected Object executeFromClasspath(UIContext ctx, final String resourceName, GlobalObjectFactory factory, Manifest mf)
+	protected <T extends UIContextProvider> Object executeFromClasspath(T ctx, final String resourceName, GlobalObjectFactory factory, Manifest mf)
 			throws Exception {
 		
 		final Object result = runnerFromClasspath(ctx, resourceName, factory, mf).execute();
@@ -270,7 +279,7 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 	 * @return
 	 * @throws Exception
 	 */
-	protected Object executeFromFile(UIContext ctx, final FileResource<?> js, GlobalObjectFactory factory, Manifest mf)
+	protected <T extends UIContextProvider> Object executeFromFile(T ctx, final FileResource<?> js, GlobalObjectFactory factory, Manifest mf)
 			throws Exception {
 
 		final DynJS dynjs = newDynJS(ctx, factory);

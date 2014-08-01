@@ -5,7 +5,6 @@
 print( "addon loaded!");
 
 function initializeUI( builder ) {
-	
-	print( builder );
-}
 
+	print( "builder " + builder );
+}
