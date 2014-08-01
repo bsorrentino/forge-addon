@@ -50,38 +50,7 @@ public class Eval extends AbstractDynjsUICommand implements UIWizard {
 
 	@Override
 	public Result execute(final UIExecutionContext context) {
-/*		
-		final PrintStream out = context.getUIContext().getProvider().getOutput().out();
-		
-		final FileResource<?> js = script.getValue();
-		
-		final GlobalObjectFactory factory = new GlobalObjectFactory() {
-			
-			@Override
-			public GlobalObject newGlobalObject(DynJS runtime) {
-				return new GlobalObject(runtime) {{
-					
-					defineReadOnlyGlobalProperty("command", Eval.this);
-					defineReadOnlyGlobalProperty("context", context);
-					
-				}};
-			}
-		};
-				
-		try {
-			final Manifest mf = getManifest();
-			
-			out.printf( "VERSION: [%s]\n", getVersion(mf));
-			
-			final Object result = super.executeFromFile(context.getUIContext(), js, factory, mf);
-			
-			return Results.success(String.valueOf(result));
 
-		} catch (Exception e) {
-
-			return Results.fail("error evaluating script file", e);
-		}
-*/
 		final GlobalObjectFactory factory = new GlobalObjectFactory() {
 			
 			@Override
@@ -113,15 +82,15 @@ public class Eval extends AbstractDynjsUICommand implements UIWizard {
 	
 	@Override
 	public NavigationResult next(UINavigationContext navigationContext) throws Exception {
-	
-				
+		
+		final PrintStream out = navigationContext.getUIContext().getProvider().getOutput().out();
+		
+		out.println( "next" );
 		
 		NavigationResultBuilder builder = NavigationResultBuilder.create();
 		
 		builder.add( new UICommand() {
-			
-			
-			
+						
 			@Override
 			public void validate(UIValidationContext context) {
 				
@@ -134,7 +103,10 @@ public class Eval extends AbstractDynjsUICommand implements UIWizard {
 			
 			@Override
 			public void initializeUI(UIBuilder builder) throws Exception {
-				/*
+				
+				final PrintStream out = builder.getUIContext().getProvider().getOutput().out();
+				out.println( "initializeUI ");
+				
 				Reference ref = dynjs.getExecutionContext().resolve("initializeUI");
 				
 				if( ref!=null ) {
@@ -146,7 +118,7 @@ public class Eval extends AbstractDynjsUICommand implements UIWizard {
 						
 					}
 				}
-				*/
+				
 			}
 			
 			@Override
