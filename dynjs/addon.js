@@ -2,32 +2,38 @@
  * New node file
  */
 
+var InputComponents = org.jboss.forge.addon.ui.util.InputComponents
+
 print( "addon loaded!");
 
-var attrs = {
-	
-	ic:null
-};
+var attrs = {};
+
+attrs.ic = self.createInput("test");
+attrs.ic.setLabel( "Test");
+attrs.ic.setRequired( true );
+//attrs.ic.setDefaultValue( "OK");
+//attrs.ic.setValue("X");		
+
+attrs.ic2 = self.createInput("test2");
+attrs.ic2.setLabel( "Test2");
+attrs.ic2.setRequired( true );
+//attrs.ic.setDefaultValue( "OK");
+//attrs.ic.setValue("X");		
 
 function initializeUI( builder ) {
 
-	print( "initialize UI")
-
-	attrs.ic = self.componentFactory.createInput("test", "t", java.lang.String);
-	attrs.ic.setLabel( "Test");
-	attrs.ic.setRequired( true );
-	//attrs.ic.setDefaultValue( "OK");
-	attrs.ic.setValue("X");
-	builder.add( attrs.ic );
-
+	print( "initialize UI");
+	builder.add( attrs.ic ).add( attrs.ic2 );
 	print( "UI initialized!")
+
 }
 
 function execute( context ) {
 
 	print( "executeJS " + context.getUIContext());
+	print( "InputComponents " + InputComponents);
 	
-	return "OK " +  attrs.ic.getValue();
+	return "OK " +  attrs.ic.value;
 }
 
 /*

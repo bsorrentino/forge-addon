@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import org.jboss.forge.addon.projects.ProjectFactory;
 import org.jboss.forge.addon.ui.input.InputComponentFactory;
+import org.jboss.forge.addon.ui.input.UIInput;
 
 
 public abstract class AbstractDynjsUICommand extends AbstractBaseDynjsUICommand {
@@ -25,4 +26,7 @@ public abstract class AbstractDynjsUICommand extends AbstractBaseDynjsUICommand 
 		return componentFactory;
 	}
 	
+	public UIInput<String> createInput( String name ) {
+		return componentFactory.createInput(name, String.class);
+	}
 }
