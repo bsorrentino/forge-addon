@@ -1,6 +1,5 @@
 package org.bsc.commands;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,22 +22,25 @@ import org.jboss.forge.addon.resource.ResourceFilter;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
+import org.jboss.forge.addon.ui.context.UINavigationContext;
 import org.jboss.forge.addon.ui.hints.InputType;
 import org.jboss.forge.addon.ui.input.InputComponent;
 import org.jboss.forge.addon.ui.input.UICompleter;
 import org.jboss.forge.addon.ui.input.UIInput;
 import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
 import org.jboss.forge.addon.ui.metadata.WithAttributes;
+import org.jboss.forge.addon.ui.result.NavigationResult;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Metadata;
+import org.jboss.forge.addon.ui.wizard.UIWizard;
 
 /**
  * 
  * @author softphone
  * 
  */
-public class EvalInProject extends AbstractDynjsProjectCommand {
+public class EvalInProject extends AbstractDynjsProjectCommand implements UIWizard {
 	@Inject
 	@WithAttributes(label = "Script", required = true, type = InputType.FILE_PICKER)
 	private UIInput<FileResource<?>> script;
@@ -52,11 +54,6 @@ public class EvalInProject extends AbstractDynjsProjectCommand {
 				.category(CATEGORY);
 	}
 
-	PrintStream out(UIContext ctx) {
-		return ctx.getProvider().getOutput().out();
-	}
-
-	
 	@SuppressWarnings("unchecked")
 	private List<Resource<?>> listResources(Resource<?> res,
 			final List<Resource<?>> result) {
@@ -85,13 +82,18 @@ public class EvalInProject extends AbstractDynjsProjectCommand {
 		return result;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public void initializeUI(final UIBuilder builder) throws Exception {
+
+		if( DEBUG ) getOut(builder).out().println("initializeUI");
 
 		final Project project = Projects.getSelectedProject(getProjectFactory(),
 				builder.getUIContext());
 
-		out(builder.getUIContext()).printf("root [%s]\n", project.getRoot());
+		if( DEBUG ) getOut(builder).out().printf("root [%s]\n", project.getRoot());
 
 		script.setCompleter(new UICompleter<FileResource<?>>() {
 
@@ -139,42 +141,48 @@ public class EvalInProject extends AbstractDynjsProjectCommand {
 
 	@Override
 	public Result execute(final UIExecutionContext context) {
+		if(DEBUG) getOut(context).out().println( "EvalP.execute" );
 
-		final Project project = super.getSelectedProject(context);
+		return Results.success();
+	}
 
-		out(context.getUIContext()).printf("script [%s]\n", script.getValue());
+	@Override
+	public NavigationResult next(UINavigationContext context) throws Exception {
+		
+		if(DEBUG) getOut(context).out().println( "EvalP.next" );
 
-		final GlobalObjectFactory factory = new GlobalObjectFactory() {
+		DynJS dynjs = getAttribute(context, DynJS.class.getName());
+		
+		
+		if( dynjs == null ) {
+			final Project project = super.getSelectedProject(context);
 
-			@Override
-			public GlobalObject newGlobalObject(DynJS runtime) {
-				return new GlobalObject(runtime) {
-					{
-
-						defineReadOnlyGlobalProperty("self",
-								EvalInProject.this);
+			final GlobalObjectFactory factory = new GlobalObjectFactory() {
+				
+				@Override
+				public GlobalObject newGlobalObject(DynJS runtime) {
+					return new GlobalObject(runtime) {{
+						
+						defineReadOnlyGlobalProperty("self", EvalInProject.this);
 						defineReadOnlyGlobalProperty("project", project);
-						//defineReadOnlyGlobalProperty("context", context);
-					}
-				};
-			}
-		};
-
-		try {
-
+						
+					}};
+				}
+			};
+	
+			dynjs = newDynJS(context, factory);
+	
+			final FileResource<?> js = script.getValue();
+	
 			final Manifest mf = getManifest();
-			
-			super.copyResourceToAssetDir("facets.js", mf);
-			
-			final Object result = super.executeFromFile(context, script.getValue(), factory, mf);
+	
+			runnerFromFile(dynjs, js, mf).evaluate();
+	
+			putAttribute( context, DynJS.class.getName(), dynjs );
 
-			return Results.success(String.valueOf(result));
-
-		} catch (Exception e) {
-
-			return Results.fail("error evaluating script file", e);
 		}
-
+		
+		return Results.navigateTo( EvalStep.class);
 	}
 
 }

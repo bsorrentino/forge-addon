@@ -19,6 +19,7 @@ import org.jboss.forge.addon.environment.Environment;
 import org.jboss.forge.addon.projects.ui.AbstractProjectCommand;
 import org.jboss.forge.addon.resource.FileResource;
 import org.jboss.forge.addon.ui.context.UIContextProvider;
+import org.jboss.forge.addon.ui.input.InputComponentFactory;
 import org.jboss.forge.addon.ui.output.UIOutput;
 import org.jboss.forge.furnace.manager.maven.MavenContainer;
 import org.jboss.forge.furnace.util.OperatingSystemUtils;
@@ -38,6 +39,10 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 
 	@Inject
 	protected DependencyResolver dependencyResolver;
+
+	@Inject
+	private InputComponentFactory componentFactory;
+	
 	
 	public MavenContainer getContainer() {
 		return container;
@@ -51,6 +56,10 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 		return dependencyResolver;
 	}
 
+	public final InputComponentFactory getComponentFactory() {
+		return componentFactory;
+	}
+	
 	/**
 	 * 
 	 * @param context

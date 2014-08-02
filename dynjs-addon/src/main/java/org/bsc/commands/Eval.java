@@ -55,7 +55,7 @@ public class Eval extends AbstractDynjsUICommand implements UIWizard {
 	@Override
 	public NavigationResult next(UINavigationContext context) throws Exception {
 		
-		getOut(context).out().println( "Eval.next" );
+		if(DEBUG) getOut(context).out().println( "Eval.next" );
 		
 		DynJS dynjs = getAttribute(context, DynJS.class.getName());
 		
