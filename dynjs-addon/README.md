@@ -7,9 +7,9 @@ Addon that allow to develop a [forge addon]() using javascript. The javascript e
 
 | Command        | Description |
 | ------------- |:-------------|
-| **eval**          | *evaluate script* |
-| **evalinproject** | *evaluate script in project's scope* |  
-| **installmodule** | *install a new common module* |
+| eval          | *evaluate script* |
+| evalinproject | *evaluate script in project's scope* |  
+| installmodule | *install a new common module* |
 
 ### Getting started
 
