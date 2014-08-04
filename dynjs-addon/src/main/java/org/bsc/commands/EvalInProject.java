@@ -175,8 +175,18 @@ public class EvalInProject extends AbstractDynjsProjectCommand implements UIWiza
 			final FileResource<?> js = script.getValue();
 	
 			final Manifest mf = getManifest();
-	
-			runnerFromFile(dynjs, js, mf).evaluate();
+			
+			try {
+				/*Object result = */runnerFromFile(dynjs, js, mf).evaluate();
+				
+			}
+			catch( Exception e) {
+				getOut(context).err().println( String.valueOf( e.getMessage()));
+				
+				if(DEBUG) e.printStackTrace(getOut(context).err());
+				
+				throw e;
+			}
 	
 			putAttribute( context, DynJS.class.getName(), dynjs );
 

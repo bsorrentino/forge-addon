@@ -39,3 +39,59 @@ fi
 
 
 */
+
+var facets = require("facets")();
+
+var String = java.lang.String;
+var Boolean = java.lang.Boolean;
+
+var input = {};
+
+input.params = self.componentFactory.createInput("params", String );
+input.params.label = "mvn parameters";
+input.params.defaultValue ="";
+
+input.dlr = self.componentFactory.createInput("dlr", Boolean );
+input.dlr.label = "Delete project's artifacts from local repo?";
+input.dlr.defaultValue = true;
+
+input.dld = self.componentFactory.createInput("dld", Boolean );
+input.dld.label = "Delete project's dependencies from local repo ?";
+input.dld.defaultValue = true;
+
+function initializeUI( builder ) {
+	
+	for( m in input ) {
+		builder.add( input[m] );
+	}
+}
+
+function execute( context ) {
+
+	facets.mavenfacet.executeMavenEmbedded( ["clean",  "-o", input.params.value ] );
+	
+	if( input.dlr.value == true ) {
+		print( "deleting project's artifact");
+		facets.mavenfacet.executeMavenEmbedded( 
+				 ["org.codehaus.mojo:build-helper-maven-plugin:1.8:remove-project-artifact", 
+				 "-Dbuildhelper.failOnError=false",
+				 "-Dbuildhelper.removeAll=true",
+				 "-fn", "-T2", "-o",  
+				 input.params.value
+				  ] );		 
+	}
+	if( input.dld.value == true ) {
+		print( "deleting project's dependencies");
+		facets.mavenfacet.executeMavenEmbedded( 
+				["org.apache.maven.plugins:maven-dependency-plugin:2.8:purge-local-repository", 
+				 "-DreResolve=false",
+				 "-DsnapshotsOnly=false",
+				 "-Dverbose=false",
+				 "-fn", "-T2", "-o",
+				 input.params.value
+				  ] );		 
+	}
+	return "OK ";
+}
+
+

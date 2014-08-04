@@ -15,7 +15,7 @@ function() {
 	
 	if( typeof project == "undefined" ){	
 		print( "WARN: project is undefined!");
-		return facets;
+		throw "project is undefined!";
 	}
 	
 	var pattern = /^([A-Za-z]+)/;
