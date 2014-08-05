@@ -41,20 +41,12 @@ fi
 */
 
 var facets = require("facets")();
+var shell = require("shell");
 
 var String = java.lang.String;
 var Boolean = java.lang.Boolean;
-var System = java.lang.System;
 
-var OSUtils = org.jboss.forge.furnace.util.OperatingSystemUtils;
-
-print( "getWorkingDir " + OSUtils.getWorkingDir() );
-print( "getUserDir " + System.getProperty("user.dir") );
-
-System.setProperty("user.dir", project.root.fullyQualifiedName);
-
-print( "getWorkingDir " + OSUtils.getWorkingDir() );
-print( "getUserDir " + System.getProperty("user.dir") );
+shell.cd( project.root.fullyQualifiedName );
 
 var input = {};
 
