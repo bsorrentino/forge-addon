@@ -21,7 +21,7 @@ Object(s) Available in the script
 
 >| object        | Description |
 | ------------- |:-------------|
-| self          | the current [command](src/main/java/org/bsc/commands/Eval.java) instance |
+| self          | the current [command](http://bsorrentino.github.io/forge-addon/dynjs-addon/apidocs/org/bsc/commands/Eval.html) instance |
 
 
 ### > evalinproject
@@ -35,7 +35,7 @@ Object(s) Available in the script
 
 >| object       | Description |
 | ------------- |:-------------|
-| self          | the current [command](src/main/java/org/bsc/commands/EvalInProject.java) instance |
+| self          | the current [command](http://bsorrentino.github.io/forge-addon/dynjs-addon/apidocs/org/bsc/commands/EvalInProject.html) instance |
 | project       | the current [project](http://docs.jboss.org/forge/javadoc/2.6.1-SNAPSHOT/) instance |
 
 ### > installmodule
