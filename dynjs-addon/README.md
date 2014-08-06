@@ -1,11 +1,10 @@
-## dynjs-addon
+## DynJS addon
 
-Addon that allow to develop a [forge addon]() using javascript. The javascript engine used is [dynjs](http://dynjs.org/)
-
+> Addon that allow to develop a [forge addon](http://forge.jboss.org/addons) using [DynJS javascript engine](http://dynjs.org/).
 
 ### Commands
 
-| Command        | Description |
+>| Command        | Description |
 | ------------- |:-------------|
 | eval          | *evaluate script* |
 | evalinproject | *evaluate script in project's scope* |  
