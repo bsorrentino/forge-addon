@@ -82,7 +82,6 @@
                         <server>github</server>
                         <repositoryName>forge-addon</repositoryName>
                         <repositoryOwner>bsorrentino</repositoryOwner>
-                        <outputDirectory>${basedir}/site</outputDirectory>
                     </configuration>
                     <!-- 
                     <executions>
