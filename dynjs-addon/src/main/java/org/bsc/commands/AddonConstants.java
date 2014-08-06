@@ -5,7 +5,7 @@ import org.jboss.forge.addon.ui.util.Categories;
 
 public interface AddonConstants {
 	
-	boolean DEBUG = true;
+	boolean DEBUG = false;
 	
 	UICategory CATEGORY = Categories.create("Utility", "Dynjs");
 	
