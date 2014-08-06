@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.jar.Manifest;
 
+import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
@@ -30,6 +31,8 @@ import org.jboss.forge.furnace.util.OperatingSystemUtils;
  *
  */
 public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand implements AddonConstants {
+	@Inject
+	BeanManager beanManager;
 	
 	@Inject
 	private MavenContainer container;
@@ -60,6 +63,10 @@ public abstract class AbstractBaseDynjsUICommand extends AbstractProjectCommand 
 		return componentFactory;
 	}
 	
+	public final BeanManager getBeanManager() {
+		return beanManager;
+	}
+
 	/**
 	 * 
 	 * @param context

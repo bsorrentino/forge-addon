@@ -23,6 +23,7 @@ import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizard;
 
 /**
+ * Evaluate a script
  * 
  * @author bsorrentino
  *
@@ -35,8 +36,11 @@ public class Eval extends AbstractDynjsUICommand implements UIWizard {
 
 	@Override
 	public UICommandMetadata getMetadata(UIContext context) {
-		return Metadata.forCommand(Eval.class).name("Eval")
-				.category(CATEGORY);
+		return Metadata.forCommand(Eval.class)
+						.name("Eval")
+						.category(CATEGORY)
+						.description("Evaluate a script")
+						;
 	}
 
 	@Override

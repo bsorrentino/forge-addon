@@ -36,6 +36,7 @@ import org.jboss.forge.addon.ui.util.Metadata;
 import org.jboss.forge.addon.ui.wizard.UIWizard;
 
 /**
+ * Evaluate a script in project's scope
  * 
  * @author softphone
  * 
@@ -50,8 +51,11 @@ public class EvalInProject extends AbstractDynjsProjectCommand implements UIWiza
 	
 	@Override
 	public UICommandMetadata getMetadata(UIContext context) {
-		return Metadata.forCommand(EvalInProject.class).name("EvalInProject")
-				.category(CATEGORY);
+		return Metadata.forCommand(EvalInProject.class)
+					   .name("EvalInProject")
+					   .category(CATEGORY)
+					   .description("Evaluate a script in project's scope")
+					   ;
 	}
 
 	@SuppressWarnings("unchecked")

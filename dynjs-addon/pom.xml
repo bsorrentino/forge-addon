@@ -6,7 +6,7 @@
   <parent>
   	<groupId>org.bsc</groupId>
   	<artifactId>forge-addon</artifactId>
-  	<version>1</version>
+  	<version>2-SNAPSHOT</version>
   </parent>
   
   <properties>
@@ -140,15 +140,16 @@ TEST
         </configuration>
         
       </plugin>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-javadoc-plugin</artifactId>
+	        <configuration>
+	        	<reportOutputDirectory>${project.reporting.outputDirectory}/${project.artifactId}/apidocs</reportOutputDirectory>
+	        	<outputDirectory>${project.build.directory}/${project.artifactId}/apidocs</outputDirectory>
+	        </configuration>
+	      </plugin>
+			      
+      
     </plugins>
   </build>
 </project>
