@@ -2,13 +2,48 @@
 
 > Addon that allow to develop a [forge addon](http://forge.jboss.org/addons) using [DynJS javascript engine](http://dynjs.org/).
 
-### Commands
+### Available Commands
 
->| Command        | Description |
+| Command       | Description  |
 | ------------- |:-------------|
-| eval          | *evaluate script* |
-| evalinproject | *evaluate script in project's scope* |  
-| installmodule | *install a new common module* |
+| eval          | *Evaluate a script* |
+| evalinproject | *Evaluate a script in project's scope* |  
+| installmodule | *Install a new common module* |
+
+### > eval
+>  Evaluate a script
+#### Parameters
+| param        | Description |
+| ------------- |:-------------|
+| --script      | *script's full path* |
+#### Implicit Object(s)
+Object(s) Available in the script
+
+>| object        | Description |
+| ------------- |:-------------|
+| self          | the current [command](src/main/java/org/bsc/commands/Eval.java) instance |
+
+
+### > evalinproject
+>  Evaluate a script in project's scope
+#### Parameters
+| param        | Description |
+| ------------- |:-------------|
+| --script      | *script's full path* |
+#### Implicit Object(s)
+Object(s) Available in the script
+
+>| object       | Description |
+| ------------- |:-------------|
+| self          | the current [command](src/main/java/org/bsc/commands/Eval.java) instance |
+| project       | the current [project](http://docs.jboss.org/forge/javadoc/2.6.1-SNAPSHOT/) instance |
+
+### > installmodule
+>  Install a new common module. After installation such module will be available to script using **require** command
+#### Parameters
+| param        | Description |
+| ------------- |:-------------|
+| --script      | *script's full path* |
 
 ### Getting started
 
