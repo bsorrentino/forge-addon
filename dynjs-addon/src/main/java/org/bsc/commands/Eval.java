@@ -45,14 +45,14 @@ public class Eval extends AbstractDynjsUICommand implements UIWizard {
 
 	@Override
 	public void initializeUI(UIBuilder builder) throws Exception {
-		getOut( builder ).out().println( "Eval.initializeUI");
+		if(DEBUG) getOut( builder ).out().println( "Eval.initializeUI");
 		
 		builder.add(script);
 	}
 
 	@Override
 	public Result execute(final UIExecutionContext context) {
-		getOut( context ).out().println( "Eval.execute");
+		if(DEBUG) getOut( context ).out().println( "Eval.execute");
 		return Results.success();
 	}
 	

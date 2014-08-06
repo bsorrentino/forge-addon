@@ -47,6 +47,11 @@ Object(s) Available in the script
 
 ### Getting started
 
+#### Install
+
+`> forge --install org.bsc:dynjs-addon,1.0.0`
+
+
 #### Javascript basic template
 ```javascript
 var input = {}; // object containing the UIInput(s)
