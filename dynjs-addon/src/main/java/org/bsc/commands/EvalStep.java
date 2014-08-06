@@ -20,17 +20,17 @@ import org.jboss.forge.addon.ui.wizard.UIWizardStep;
  * @author bsorrentino
  *
  */
-public class EvalStep extends AbstractUICommand implements UIWizardStep {
+public class EvalStep extends AbstractUICommand implements UIWizardStep, AddonConstants {
 
 	@Override
 	public NavigationResult next(UINavigationContext context) throws Exception {
-		getOut(context).out().println("EvalStep.next");
+		if(DEBUG) getOut(context).out().println("EvalStep.next");
 		return null;
 	}
 
 	@Override
 	public Result execute(UIExecutionContext context) throws Exception {
-		getOut(context).out().println("EvalStep.execute");
+		if(DEBUG) getOut(context).out().println("EvalStep.execute");
 
 		DynJS dynjs = getAttribute(context, DynJS.class.getName());
 
@@ -60,7 +60,7 @@ public class EvalStep extends AbstractUICommand implements UIWizardStep {
 		DynJS dynjs = getAttribute(builder, DynJS.class.getName());
 
 		if (dynjs != null) {
-			getOut(builder).out().println("EvalStep.initializeUI");
+			if(DEBUG) getOut(builder).out().println("EvalStep.initializeUI");
 
 			Reference ref = dynjs.getExecutionContext().resolve("initializeUI");
 
