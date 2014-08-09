@@ -10,7 +10,7 @@
   </parent>
   
   <properties>
-    <version.furnace>2.6.0.Final</version.furnace>
+    <version.furnace>2.7.2.Final</version.furnace>
   </properties>
 
   <dependencyManagement>
