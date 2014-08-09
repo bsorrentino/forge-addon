@@ -24,12 +24,7 @@ public class DynjsAddonTest
 
    @Deployment
    @Dependencies({ 
-       //@AddonDependency(name = "org.jboss.forge.addon:addon-manager", version="2.4.1.Final"),
-       //@AddonDependency(name = "org.jboss.forge.addon:addons", version="2.4.1.Final"),
-       //@AddonDependency(name = "org.jboss.forge.addon:core", version="2.4.1.Final"),
-       //@AddonDependency(name = "org.jboss.forge.furnace.container:cdi", version="2.4.1.Final")
-       //@AddonDependency(name = "org.jboss.forge.addon:maven"),
-	   @AddonDependency(name = "org.bsc:dynjs-addon", version="2.7.2-SNAPSHOT") 
+	  @AddonDependency(name = "org.bsc:dynjs-addon", version="2.7.2-SNAPSHOT") 
 	   })
    public static ForgeArchive getDeployment()
    {
