@@ -49,8 +49,9 @@ Object(s) Available in the script
 
 #### Install
 
-`> forge --install org.bsc:dynjs-addon,1.0.0`
+`> forge --install org.bsc:dynjs-addon,2.6.0.Final`
 
+All available version [here](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.bsc%22%20AND%20a%3A%22dynjs-addon%22)
 
 #### Javascript basic template
 ```javascript
@@ -74,20 +75,21 @@ function execute( context ) { // perform task using the input values
 #### Print the values of required inputs
 ```javascript
 var String = java.lang.String;
+var Boolean = java.lang.Boolean;
 
 print( "addon loaded!");
 
 var input = {};
 
-// initialize an UIInput
-input.ic = self.componentFactory.createInput("test", String );
-input.ic.label = "Test";
-input.ic.required = true;
+// initialize an UIInput (String)
+input.string0 = self.componentFactory.createInput("string0", String );
+input.string0.label = "Give me a string";
+input.string0.required = true;
 
-// initialize an UIInput
-input.ic2 = self.componentFactory.createInput("test2", String );
-input.ic2.label = "Test2";
-input.ic2.required = true;
+// initialize an UIInput (Boolean)
+input.bool0 = self.componentFactory.createInput("bool0", Boolean );
+input.bool0.label = "Give me boolean";
+input.bool0.DefaultValue = true;
 
 function initializeUI( builder ) {
 
@@ -104,8 +106,64 @@ function execute( context ) {
 	print( "executeJS " );
 
 	return "OK " +  
-         input.ic.value +
+         input.string0.value +
          " - " +
-         input.ic2.value;
+         input.bool0.value;
 }
+```
+
+#### Require module(s)
+```javascript
+
+
+var facets = require("facets")(); // facets is a built-in module
+// Other modules can be shared using 'installModule' command
+
+print( "addon loaded!");
+
+
+function initializeUI( builder ) {
+
+}
+
+function execute( context ) {
+
+  // Perform clean,package on current open project
+  facets.mavenfacet.executeMaven( ["clean",  "package"] );
+}
+```
+
+#### Develop a Module
+```javascript
+
+/**
+Simple module that provide pwd & cd functions
+
+install from cli:
+=================
+
+> installmodule --script <full script path>
+
+Usage within script:
+====================
+
+var shell = require("shell");
+
+*/
+
+var OSUtils = org.jboss.forge.furnace.util.OperatingSystemUtils;
+var System = java.lang.System;
+
+module.exports = {
+
+		pwd:function() {
+			return OSUtils.getWorkingDir();
+		},
+		cd:function( dir ) {
+			return System.setProperty("user.dir", dir);
+		}
+
+
+}
+
 ```
