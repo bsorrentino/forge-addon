@@ -167,3 +167,6 @@ module.exports = {
 }
 
 ```
+
+### Example
+> Checkout more examples from [here](samples)
