@@ -36,7 +36,7 @@ Object(s) Available in the script
 >| object       | Description |
 | ------------- |:-------------|
 | self          | the current [command](http://bsorrentino.github.io/forge-addon/dynjs-addon/apidocs/org/bsc/commands/EvalInProject.html) instance |
-| project       | the current [project](http://docs.jboss.org/forge/javadoc/2.6.1-SNAPSHOT/) instance |
+| project       | the current [project](http://docs.jboss.org/forge/javadoc/2.6.1-SNAPSHOT/org/jboss/forge/addon/projects/Project.html) instance |
 
 ### > installmodule
 >  Install a new common module. After installation such module will be available to script using **require** command
