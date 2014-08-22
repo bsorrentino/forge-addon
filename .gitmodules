@@ -1,0 +1,3 @@
+[submodule "dynjs-addon"]
+	path = dynjs-addon
+	url = https://github.com/bsorrentino/forge-dynjs-addon.git
