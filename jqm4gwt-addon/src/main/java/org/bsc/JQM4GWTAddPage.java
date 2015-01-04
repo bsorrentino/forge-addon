@@ -96,6 +96,19 @@ public class JQM4GWTAddPage extends AbstractDynjsProjectCommand implements UIWiz
     return Results.navigateTo(EvalStep.class);
   }
 
+  
+  private MethodSource<?> implementJQMPageEventHandlerMethod( final JavaClassSource jcs, final String name ) {
+      MethodSource<?> m = jcs.addMethod()
+      .setName(name)
+      .setReturnTypeVoid()
+      .setPublic()
+      .setBody("");
+      m.addParameter("com.sksamuel.jqm4gwt.JQMPageEvent", "event");
+      m.addAnnotation(Override.class);
+	  
+      return m;
+  }
+  
   /**
   *
   */
@@ -104,10 +117,11 @@ public class JQM4GWTAddPage extends AbstractDynjsProjectCommand implements UIWiz
 
     final JavaClassSource jcs = Roaster.create(  JavaClassSource.class );
 
+    
     jcs.setPublic()
     .setPackage( jsf.getBasePackage().concat(".client") )
     .setName( className )
-    .addInterface("JQMPageEvent.Handler")
+    .addInterface("com.sksamuel.jqm4gwt.JQMPageEvent.Handler")
     .addField( String.format("public static final UiBinder BINDER = GWT.create(%s.UiBinder.class);", className))
     .getOrigin()
     .addField( String.format("public final static JQMPage INSTANCE = new %s().page;", className))
@@ -117,60 +131,18 @@ public class JQM4GWTAddPage extends AbstractDynjsProjectCommand implements UIWiz
     .addMethod().setConstructor(true).setBody("page.addPageHandler(this);")
     .getOrigin()
     ;
-    {
-      MethodSource<?> m = jcs.addMethod()
-      .setName("onInit")
-      .setReturnTypeVoid()
-      .setPublic()
-      .setBody("");
-      m.addParameter("com.sksamuel.jqm4gwt.JQMPageEvent", "event");
-      m.addAnnotation(Override.class);
-    }
+    
+    implementJQMPageEventHandlerMethod(jcs, "onInit");
+    implementJQMPageEventHandlerMethod(jcs, "onBeforeShow");
+    implementJQMPageEventHandlerMethod(jcs, "onBeforeHide");
+    implementJQMPageEventHandlerMethod(jcs, "onShow");
+    implementJQMPageEventHandlerMethod(jcs, "onHide");
 
-    {
-      MethodSource<?> m = jcs.addMethod()
-      .setName("onBeforeShow")
-      .setReturnTypeVoid()
-      .setPublic()
-      .setBody("");
-
-      m.addParameter("com.sksamuel.jqm4gwt.JQMPageEvent", "event");
-      m.addAnnotation(Override.class);
-    }
-    {
-      MethodSource<?> m = jcs.addMethod()
-      .setName("onBeforeHide")
-      .setReturnTypeVoid()
-      .setPublic()
-      .setBody("");
-
-      m.addParameter("com.sksamuel.jqm4gwt.JQMPageEvent", "event");
-      m.addAnnotation(Override.class);
-    }
-    {
-      MethodSource<?> m = jcs.addMethod()
-      .setName("onShow")
-      .setReturnTypeVoid()
-      .setPublic()
-      .setBody("");
-
-      m.addParameter("com.sksamuel.jqm4gwt.JQMPageEvent", "event");
-      m.addAnnotation(Override.class);
-    }
-    {
-      MethodSource<?> m = jcs.addMethod()
-      .setName("onHide")
-      .setReturnTypeVoid()
-      .setPublic()
-      .setBody("");
-
-      m.addParameter("com.sksamuel.jqm4gwt.JQMPageEvent", "event");
-      m.addAnnotation(Override.class);
-    }
-
-
+    jcs.addImport("import com.google.gwt.core.client.GWT");
     jcs.addImport("com.sksamuel.jqm4gwt.JQMPage");
     jcs.addImport("com.sksamuel.jqm4gwt.JQMPageEvent");
+    jcs.addImport("com.sksamuel.jqm4gwt.JQMPageEvent.Handler");
+    
     jcs.addNestedType(String.format("interface UiBinder extends com.google.gwt.uibinder.client.UiBinder<JQMPage, %s> { }", className));
 
     return jcs;
