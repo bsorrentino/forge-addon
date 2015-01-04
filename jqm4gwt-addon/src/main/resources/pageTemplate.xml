@@ -1,0 +1,42 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder
+  xmlns:ui='urn:ui:com.google.gwt.uibinder'
+  xmlns:g='urn:import:com.google.gwt.user.client.ui'
+  xmlns:jqm='urn:import:com.sksamuel.jqm4gwt'
+  xmlns:h="urn:import:com.sksamuel.jqm4gwt.html"
+  xmlns:b="urn:import:com.sksamuel.jqm4gwt.button"
+  xmlns:t="urn:import:com.sksamuel.jqm4gwt.toolbar"
+  xmlns:l="urn:import:com.sksamuel.jqm4gwt.list"
+  xmlns:ly="urn:import:com.sksamuel.jqm4gwt.layout"
+  xmlns:f="urn:import:com.sksamuel.jqm4gwt.form"
+  xmlns:e="urn:import:com.sksamuel.jqm4gwt.form.elements"
+  xmlns:ta="urn:import:com.sksamuel.jqm4gwt.table"
+  >	
+  
+<ui:style>
+</ui:style>
+
+
+<jqm:JQMPage containerId="page_id" >
+
+<t:JQMHeader backButton="false" >PAGE</t:JQMHeader>
+
+<!-- CONTENT HERE -->
+
+<t:JQMFooter fixed="true"   >
+<t:widget>
+	<t:JQMNavBar iconPos="LEFT" >
+	<t:button>
+		<b:JQMButton	
+			transition="NONE" 
+			text="Home"
+			builtInIcon="HOME"   	          				
+			/>
+	</t:button>
+	</t:JQMNavBar>
+</t:widget>
+</t:JQMFooter>
+	
+</jqm:JQMPage>
+
+</ui:UiBinder>
