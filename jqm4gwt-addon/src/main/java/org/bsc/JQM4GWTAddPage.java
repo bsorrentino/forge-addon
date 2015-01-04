@@ -184,7 +184,7 @@ public class JQM4GWTAddPage extends AbstractDynjsProjectCommand implements UIWiz
 	
 	  		final JavaSourceFacet jsf = project.getFacet(JavaSourceFacet.class);
 	  		
-			final DirectoryResource uibinderDir = jsf.getBasePackageDirectory();
+			final DirectoryResource uibinderDir = jsf.getBasePackageDirectory().getChildDirectory("client");
 
 			if (!uibinderDir.exists()) {
 
