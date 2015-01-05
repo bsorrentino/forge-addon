@@ -122,15 +122,20 @@ public class JQM4GWTAddPage extends AbstractDynjsProjectCommand implements UIWiz
     .setPackage( jsf.getBasePackage().concat(".client") )
     .setName( className )
     .addInterface("com.sksamuel.jqm4gwt.JQMPageEvent.Handler")
-    .addField( String.format("public static final UiBinder BINDER = GWT.create(%s.UiBinder.class);", className))
+    	.addField( String.format("public static final UiBinder BINDER = GWT.create(%s.UiBinder.class);", className))
     .getOrigin()
-    .addField( String.format("public final static JQMPage INSTANCE = new %s().page;", className))
+    	.addField( String.format("public final static %s INSTANCE = new %s();", className,className))
     .getOrigin()
-    .addField( String.format("private final JQMPage page = %s.BINDER.createAndBindUi(this);", className))
+    	.addField( String.format("private final JQMPage page = %s.BINDER.createAndBindUi(this);", className))
     .getOrigin()
-    .addMethod().setConstructor(true).setBody("page.addPageHandler(this);")
+    	.addMethod().setConstructor(true).setBody("page.addPageHandler(this);")
     .getOrigin()
-    ;
+    .addMethod()
+	    .setName("getPage")
+	    .setReturnType("JQMPage")
+	    .setPublic()
+	    .setFinal(true)
+	    .setBody("return page;");
     
     implementJQMPageEventHandlerMethod(jcs, "onInit");
     implementJQMPageEventHandlerMethod(jcs, "onBeforeShow");
@@ -138,7 +143,7 @@ public class JQM4GWTAddPage extends AbstractDynjsProjectCommand implements UIWiz
     implementJQMPageEventHandlerMethod(jcs, "onShow");
     implementJQMPageEventHandlerMethod(jcs, "onHide");
 
-    jcs.addImport("import com.google.gwt.core.client.GWT");
+    jcs.addImport("com.google.gwt.core.client.GWT");
     jcs.addImport("com.sksamuel.jqm4gwt.JQMPage");
     jcs.addImport("com.sksamuel.jqm4gwt.JQMPageEvent");
     jcs.addImport("com.sksamuel.jqm4gwt.JQMPageEvent.Handler");
