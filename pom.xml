@@ -11,6 +11,8 @@
   <artifactId>forge-addon</artifactId>
   <version>2</version>
   <packaging>pom</packaging>
+  <name>FORGE::addon parent</name>
+  <description>FORGE addon parent</description>
   <licenses>
     <license>
       <name>The MIT License (MIT)</name>
@@ -92,6 +94,11 @@
   </build>
   <profiles>
     <profile>
+         <!--
+         ====================================================================================
+         mvn -Prelease release:perform -Dtag=tagname -Darguments=-Dgpg.passphrase=thephrase
+         ====================================================================================
+         -->        
       <id>release</id>
       <build>
         <plugins>
