@@ -11,7 +11,7 @@
   <artifactId>forge-addon</artifactId>
   <version>3</version>
   <packaging>pom</packaging>
-  <name>FORGE::addon parent</name>
+  <name>FORGE::Addon parent</name>
   <description>FORGE addon parent</description>
   <licenses>
     <license>
