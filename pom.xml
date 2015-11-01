@@ -35,33 +35,21 @@
   </scm>
   <distributionManagement>
     <repository>
-      <id>${release.repo.id}</id>
+      <id>sonatype-server</id>
       <name>central</name>
-      <url>${release.repo.url}</url>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
     </repository>
     <snapshotRepository>
-      <id>${snapshot.repo.id}</id>
+      <id>sonatype-server</id>
       <name>snapshots</name>
-      <url>${snapshot.repo.url}</url>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
   </distributionManagement>
   <properties>
-    <release.repo.id>sonatype-server</release.repo.id>
     <addTimestamp>true</addTimestamp>
-    <maven.compiler.target>1.7</maven.compiler.target>
-    <snapshot.repo.url>https://oss.sonatype.org/content/repositories/snapshots</snapshot.repo.url>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <release.repo.url>https://oss.sonatype.org/service/local/staging/deploy/maven2</release.repo.url>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <snapshot.repo.id>sonatype-server</snapshot.repo.id>
     <tag>${project.artifactId}-${project.version}</tag>
   </properties>
-  <repositories>
-    <repository>
-      <id>${snapshot.repo.id}</id>
-      <url>${snapshot.repo.url}</url>
-    </repository>
-  </repositories>
   <build>
     <pluginManagement>
       <plugins>
@@ -91,14 +79,29 @@
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+
+        <plugin>
+           <groupId>external.atlassian.jgitflow</groupId>
+           <artifactId>jgitflow-maven-plugin</artifactId>
+           <version>1.0-m5.1</version>
+           <configuration>
+             <flowInitContext>
+               <versionTagPrefix>v</versionTagPrefix>
+            </flowInitContext>
+           </configuration>
+       </plugin>
+        
+    </plugins>
+    
   </build>
   <profiles>
     <profile>
-         <!--
-         ====================================================================================
-         mvn -Prelease release:perform -Dtag=tagname -Darguments=-Dgpg.passphrase=thephrase
-         ====================================================================================
-         -->        
+    <!--
+    ====================================================================================
+    mvn -Prelease release:perform -Dtag=tagname -Darguments=-Dgpg.passphrase=thephrase
+    ====================================================================================
+    -->        
       <id>release</id>
       <build>
         <plugins>
