@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.bsc</groupId>
+        <artifactId>forge-addon</artifactId>
+        <version>4</version>
+    </parent>
+    <artifactId>js-addon-test</artifactId>
+    <version>3.0.0</version>
+    <packaging>jar</packaging>
+    <properties>
+    <version.furnace>2.23.4.Final</version.furnace>
+  </properties>
+    <dependencies>
+    <dependency>
+      <groupId>org.jboss.forge.furnace.container</groupId>
+      <artifactId>cdi</artifactId>
+      <classifier>forge-addon</classifier>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>dynjs-addon</artifactId>
+      <classifier>forge-addon</classifier>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.forge.furnace.test</groupId>
+      <artifactId>furnace-test-harness</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.forge.furnace.test</groupId>
+      <artifactId>arquillian-furnace-classpath</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.forge.addon</groupId>
+      <artifactId>core</artifactId>
+      <classifier>forge-addon</classifier>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
