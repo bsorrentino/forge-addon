@@ -1,3 +1,5 @@
 # Forge addon(s)
 
-> Collection of JBoss Forge addon
+> Common Parent for addon project
+
+
